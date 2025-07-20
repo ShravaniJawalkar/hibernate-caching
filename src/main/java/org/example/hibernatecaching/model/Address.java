@@ -1,7 +1,7 @@
 package org.example.hibernatecaching.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,12 +10,14 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
-@Table(name ="address_dumy",schema = "public")
+@Table(name = "address_dumy", schema = "public")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region = "addressCache")
 @Cacheable
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id", scope = Address.class)
 public class Address {
 
     @Id
@@ -31,6 +33,5 @@ public class Address {
     @Column(name = "zip_code", nullable = false)
     private String zipCode;
     @OneToOne(mappedBy = "address")
-    @JsonManagedReference
     private User user;
 }
