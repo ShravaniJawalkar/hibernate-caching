@@ -1,5 +1,6 @@
 package org.example.hibernatecaching.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Index;
@@ -54,5 +55,6 @@ public class User  implements Serializable {
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", referencedColumnName = "address_id", nullable = false)
+    @JsonBackReference
     private Address address;
 }

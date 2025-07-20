@@ -1,6 +1,7 @@
 package org.example.hibernatecaching.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,6 +31,6 @@ public class Address {
     @Column(name = "zip_code", nullable = false)
     private String zipCode;
     @OneToOne(mappedBy = "address")
-    @JsonIgnore
+    @JsonManagedReference
     private User user;
 }
