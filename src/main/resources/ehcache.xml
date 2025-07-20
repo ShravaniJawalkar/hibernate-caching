@@ -1,0 +1,41 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.ehcache.org/v3"
+        xsi:schemaLocation="http://www.ehcache.org/v3 http://www.ehcache.org/schema/ehcache-core-3.0.xsd">
+    <cache alias="userCache">
+        <resources>
+            <heap unit="entries">1000</heap>
+        </resources>
+        <expiry>
+            <ttl unit="seconds">3600</ttl>
+        </expiry>
+        <!-- LRU eviction is default for heap in Ehcache 3.x -->
+    </cache>
+    <cache alias="orderCache">
+        <resources>
+            <heap unit="entries">1000</heap>
+        </resources>
+        <expiry>
+            <ttl unit="seconds">3600</ttl>
+        </expiry>
+    </cache>
+    <!-- LRU eviction is default for heap in Ehcache 3.x -->
+    <cache alias="addressCache">
+        <resources>
+            <heap unit="entries">1000</heap>
+        </resources>
+        <expiry>
+            <ttl unit="seconds">3600</ttl>
+        </expiry>
+    </cache>
+    <!-- different region -->
+    <!--    <cache alias="userCache">-->
+    <!--        <resources>-->
+    <!--            <heap unit="entries">1000</heap>-->
+    <!--        </resources>-->
+    <!--        <expiry>-->
+    <!--            <ttl unit="seconds">3600</ttl>-->
+    <!--        </expiry>-->
+    <!--        &lt;!&ndash; LRU eviction is default for heap in Ehcache 3.x &ndash;&gt;-->
+    <!--    </cache>-->
+</config>
+
