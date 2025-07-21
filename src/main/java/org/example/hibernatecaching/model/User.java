@@ -12,8 +12,9 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.*;
 import org.hibernate.annotations.Cache;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "user_dumy", schema = "public",
@@ -35,7 +36,7 @@ import java.time.LocalDateTime;
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "id"
 )
-public class User implements Serializable {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @UuidGenerator(style = UuidGenerator.Style.RANDOM)
@@ -61,4 +62,16 @@ public class User implements Serializable {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", referencedColumnName = "address_id", nullable = false)
     private Address address;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY,cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Order> orders = new ArrayList<>();
+
+    public void addOrder(Order order) {
+        if (orders != null) {
+            orders.add(order);
+            order.setUser(this); // Set the user in the order for bidirectional mapping
+        } else {
+            throw new IllegalStateException("Orders list is not initialized");
+        }
+    }
 }

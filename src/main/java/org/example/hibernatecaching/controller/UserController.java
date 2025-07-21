@@ -51,4 +51,9 @@ public class UserController {
         return userService.getAllAddress();
     }
 
+    @DeleteMapping("/{id}/order")
+    public ResponseEntity<String> deleteUser(@PathVariable String id) {
+        return userService.deleteOrderByUserId(id);
+    }
+
 }

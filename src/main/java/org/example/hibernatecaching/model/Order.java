@@ -1,12 +1,13 @@
 package org.example.hibernatecaching.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.example.hibernatecaching.model.compositekey.OrderCompositKeyWithId;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @IdClass(OrderCompositKeyWithId.class)
@@ -15,7 +16,9 @@ import java.time.LocalDateTime;
 @Data
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "orderCache")
 @Cacheable
-public class Order implements Serializable {
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "orderId")
+public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_seq")
@@ -32,5 +35,12 @@ public class Order implements Serializable {
     @Column(name = "order_date", nullable = false, updatable = false)
     private LocalDateTime orderDate;
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    private User user;
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
 }

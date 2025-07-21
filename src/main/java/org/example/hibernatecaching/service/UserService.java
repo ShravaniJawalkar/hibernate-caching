@@ -28,10 +28,24 @@ public class UserService {
         user.setEmail(userRequest.getEmail());
         user.setPhone(userRequest.getPhone());
         user.setAddress(saveAddress(userRequest.getAddress()));
+        saveOrderRequestToOrder(userRequest.getOrders(), user);
         user.setInsertedBy(userRequest.getCreatedBy());
         userRepository.save(user);
         String name = userRepository.findById(user.getId()).map(User::getUserName).orElse(null);
         return ResponseEntity.ok("User created successfully" + " with name: " + name);
+    }
+
+    private void saveOrderRequestToOrder(List<OrderRequest> orders, User user) {
+        if (orders != null && !orders.isEmpty()) {
+            orders.forEach(orderRequest -> {
+                Order order = new Order();
+                order.setProductName(orderRequest.getProductName());
+                order.setQuantity(orderRequest.getQuantity());
+                order.setPrice(orderRequest.getPrice());
+                order.setOrderDate(orderRequest.getOrderDate());
+                user.addOrder(order);
+            });
+        }
     }
 
     private Address saveAddress(AddressRequest address) {
@@ -86,9 +100,25 @@ public class UserService {
             userResponse.setPhone(user.getPhone());
             userResponse.setAddress(saveResponseAddress(user.getAddress()));
             userResponse.setCreatedBy(user.getInsertedBy());
+            userResponse.setOrders(setOrders(user.getOrders()));
             userResponses.add(userResponse);
         });
         return ResponseEntity.ok(userResponses);
+    }
+
+    private List<OrderRequest> setOrders(List<Order> orders) {
+        List<OrderRequest> orderRequests = new ArrayList<>();
+        if (orders != null && !orders.isEmpty()) {
+            orders.forEach(order -> {
+                OrderRequest orderRequest = new OrderRequest();
+                orderRequest.setProductName(order.getProductName());
+                orderRequest.setQuantity(order.getQuantity());
+                orderRequest.setPrice(order.getPrice());
+                orderRequest.setOrderDate(order.getOrderDate());
+                orderRequests.add(orderRequest);
+            });
+        }
+        return orderRequests; // Assuming the orders are converted correctly
     }
 
     private AddressRequest saveResponseAddress(Address address) {
@@ -115,8 +145,25 @@ public class UserService {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("All users deleted successfully");
     }
 
-    public ResponseEntity<List<Address>> getAllAddress(){
-        List<Address> addresses= addressRepository.findAll();
+    public ResponseEntity<List<Address>> getAllAddress() {
+        List<Address> addresses = addressRepository.findAll();
         return ResponseEntity.ok(addresses);
+    }
+
+    public ResponseEntity<String> deleteOrderByUserId(String id) {
+        User user = userRepository.findById(id).orElse(null);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+        List<Order> orders = user.getOrders();
+        if (orders != null && !orders.isEmpty()) {
+            Order orderToRemove = orders.getFirst();
+            orderToRemove.setUser(null);
+            orders.remove(orderToRemove);
+        }
+
+        user.setOrders(orders);// Clear the orders associated with the user
+        userRepository.save(user); // Save the user to persist changes
+        return ResponseEntity.ok("Orders deleted successfully for user with ID: " + id);
     }
 }

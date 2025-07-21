@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,4 +22,6 @@ public class UserResponse {
     private AddressRequest address = new AddressRequest();
     @JsonProperty("created_by")
     private String createdBy;
+    @JsonProperty("orders")
+    private List<OrderRequest> orders = new ArrayList<>();
 }
