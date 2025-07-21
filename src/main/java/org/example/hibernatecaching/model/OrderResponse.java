@@ -6,6 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,4 +23,6 @@ public class OrderResponse {
     private LocalDateTime orderDate;
     @JsonProperty("user")
     private String userName;
+    @JsonProperty("products")
+    private List<ProductResponse> products = new ArrayList<>();
 }

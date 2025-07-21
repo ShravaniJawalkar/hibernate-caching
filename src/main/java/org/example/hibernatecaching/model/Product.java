@@ -36,7 +36,7 @@ public class Product {
     @Column(name = "price", nullable = false)
     private Double price;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.DETACH, CascadeType.REFRESH})
     @JoinTable(name = "product_order",
             joinColumns = {
                     @JoinColumn(name = "product_id", referencedColumnName = "product_id")
@@ -50,7 +50,7 @@ public class Product {
     public void addOrder(Order order) {
         if (order != null) {
             orders.add(order);
-//            order.getProducts().add(this); // Ensure bidirectional relationship
+            order.getProducts().add(this); // Ensure bidirectional relationship
         }
     }
 }

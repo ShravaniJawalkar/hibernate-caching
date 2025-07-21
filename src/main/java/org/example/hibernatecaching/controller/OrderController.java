@@ -37,7 +37,12 @@ public class OrderController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Order>> getAllOrders() {
+    public ResponseEntity<List<OrderResponse>> getAllOrders() {
         return orderService.getAllOrders();
+    }
+
+    @PutMapping("/{orderId}/product/{productId}")
+    public ResponseEntity<String> updateOrderProduct(@PathVariable Long orderId, @PathVariable Long productId,@RequestParam("order_date") String orderDate) {
+        return orderService.updateOrderProduct(orderId, productId,orderDate);
     }
 }

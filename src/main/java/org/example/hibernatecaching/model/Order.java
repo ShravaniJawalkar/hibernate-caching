@@ -9,6 +9,8 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @IdClass(OrderCompositKeyWithId.class)
 @Table(name = "order_dumy", schema = "public")
@@ -38,5 +40,15 @@ public class Order {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User user;
+
+    @ManyToMany(mappedBy = "orders", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+    private List<Product> products = new ArrayList<>();
+
+    public void addProduct(Product product) {
+        if(product != null) {
+          products.add(product);
+          product.getOrders().add(this);
+        }
+    }
 
 }

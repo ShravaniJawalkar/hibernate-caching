@@ -19,7 +19,7 @@ spring:
           region.factory_class: org.hibernate.cache.jcache.JCacheRegionFactory
           jcache.provider: org.ehcache.jsr107.EhcacheCachingProvider
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
 
 logging:
   level:

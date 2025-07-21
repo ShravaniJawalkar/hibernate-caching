@@ -49,6 +49,7 @@ public class ProductService {
         List<OrderResponse> orderResponses = new ArrayList<>();
         orders.forEach(order -> {
             OrderResponse orderResponse = new OrderResponse();
+            orderResponse.setProductName(order.getProductName());
             orderResponse.setOrderDate(order.getOrderDate());
 //            orderResponse.setUserName(order.getUser().getUserName());
             orderResponse.setQuantity(order.getQuantity());
