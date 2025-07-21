@@ -2,6 +2,7 @@ package org.example.hibernatecaching.service;
 
 import org.example.hibernatecaching.model.Order;
 import org.example.hibernatecaching.model.OrderRequest;
+import org.example.hibernatecaching.model.OrderResponse;
 import org.example.hibernatecaching.model.compositekey.OrderCompositKeyWithId;
 import org.example.hibernatecaching.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,12 +42,22 @@ public class OrderService {
         return ResponseEntity.ok("Order updated successfully");
     }
 
-    public ResponseEntity<Order> getOrderById(Long orderId, String orderDate) {
+    public ResponseEntity<OrderResponse> getOrderById(Long orderId, String orderDate) {
         // Logic to retrieve an order by ID
         LocalDateTime now = LocalDateTime.parse(orderDate);
         OrderCompositKeyWithId orderCompositKeyWithId = new OrderCompositKeyWithId(orderId, now);
         Order order = orderRepository.findById(orderCompositKeyWithId).orElse(null);
-        return ResponseEntity.ok(order);
+        if (order == null) {
+            return ResponseEntity.notFound().build();
+        }
+        OrderResponse orderResponse = new OrderResponse();
+        orderResponse.setProductName(order.getProductName());
+        orderResponse.setQuantity(order.getQuantity());
+        orderResponse.setPrice(order.getPrice());
+        orderResponse.setOrderDate(order.getOrderDate());
+        orderResponse.setUserName(order.getUser().getUserName());
+
+        return ResponseEntity.ok(orderResponse);
     }
 
     public ResponseEntity<String> deleteOrder(Long orderId, String orderDate) {

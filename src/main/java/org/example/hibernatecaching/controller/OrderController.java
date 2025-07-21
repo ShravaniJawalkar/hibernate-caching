@@ -2,6 +2,7 @@ package org.example.hibernatecaching.controller;
 
 import org.example.hibernatecaching.model.Order;
 import org.example.hibernatecaching.model.OrderRequest;
+import org.example.hibernatecaching.model.OrderResponse;
 import org.example.hibernatecaching.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +27,7 @@ public class OrderController {
     }
 
     @GetMapping("/{orderId}")
-    public ResponseEntity<Order> getOrderById(@PathVariable Long orderId, @RequestParam("order_date") String orderDate) {
+    public ResponseEntity<OrderResponse> getOrderById(@PathVariable Long orderId, @RequestParam("order_date") String orderDate) {
         return orderService.getOrderById(orderId, orderDate);
     }
 

@@ -166,4 +166,11 @@ public class UserService {
         userRepository.save(user); // Save the user to persist changes
         return ResponseEntity.ok("Orders deleted successfully for user with ID: " + id);
     }
+
+    public boolean isUserExists(String name) {
+        return userRepository.existsByUserName(name);
+    }
+    public User getUserByName(String name) {
+        return userRepository.findByUserName(name).orElse(null);
+    }
 }

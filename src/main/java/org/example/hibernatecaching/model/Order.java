@@ -39,8 +39,4 @@ public class Order {
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User user;
 
-    public void setUser(User user) {
-        this.user = user;
-    }
-
 }
