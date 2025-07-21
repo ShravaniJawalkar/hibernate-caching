@@ -56,4 +56,9 @@ public class UserController {
         return userService.deleteOrderByUserId(id);
     }
 
+    @PutMapping("/{id}/order")
+    public ResponseEntity<String> updateOrderByUserId(@PathVariable String id, @RequestBody OrderRequest order) {
+        return userService.updateOrderByUserId(id, order);
+    }
+
 }

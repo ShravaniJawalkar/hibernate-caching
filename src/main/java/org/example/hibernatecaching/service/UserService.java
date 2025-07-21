@@ -173,4 +173,18 @@ public class UserService {
     public User getUserByName(String name) {
         return userRepository.findByUserName(name).orElse(null);
     }
+
+    public ResponseEntity<String> updateOrderByUserId(String id, OrderRequest order) {
+        userRepository.findById(id).ifPresent(user -> {
+            Order orderEntity = new Order();
+            orderEntity.setProductName(order.getProductName());
+            orderEntity.setQuantity(order.getQuantity());
+            orderEntity.setPrice(order.getPrice());
+            orderEntity.setOrderDate(order.getOrderDate());
+            orderEntity.setUser(user);
+            user.addOrder(orderEntity);
+            userRepository.save(user);
+        });
+        return ResponseEntity.ok("Order updated successfully for user with ID: " + id);
+    }
 }

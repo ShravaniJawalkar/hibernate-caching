@@ -27,6 +27,14 @@
             <ttl unit="seconds">3600</ttl>
         </expiry>
     </cache>
+    <cache alias="productCache">
+        <resources>
+            <heap unit="entries">1000</heap>
+        </resources>
+        <expiry>
+            <ttl unit="seconds">3600</ttl>
+        </expiry>
+    </cache>
     <!-- different region -->
     <!--    <cache alias="userCache">-->
     <!--        <resources>-->
