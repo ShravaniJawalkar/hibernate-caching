@@ -1,6 +1,5 @@
 package org.example.hibernatecaching.controller;
 
-import org.example.hibernatecaching.model.Order;
 import org.example.hibernatecaching.model.OrderRequest;
 import org.example.hibernatecaching.model.OrderResponse;
 import org.example.hibernatecaching.service.OrderService;
